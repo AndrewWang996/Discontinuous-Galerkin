@@ -10,7 +10,7 @@ import getMassMatrix    # run getMassMatrix.py
 from readMesh import Nodes, Elements, Edges, Neighbors
 from readData import Tags
 from getBaseFunctions import ReferenceBaseFunctions
-from getMassMatrix import MassMatrix
+from getMassMatrix import Jacobians, ReferenceMassMatrix
 
 
 

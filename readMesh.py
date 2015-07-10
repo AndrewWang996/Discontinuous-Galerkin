@@ -6,7 +6,7 @@ Description: Parses mesh files into Python lists
 
 Important Variables:
 Nodes (x,y)
-Elements (node_index_1, node_index_2, node_index_3, attribute)
+Elements ( (node_index_1, node_index_2, node_index_3), attribute)
 Edges (node_index_1, node_index_2)
 Neighbors (element_index_1, element_index_2, element_index_3)
 '''
