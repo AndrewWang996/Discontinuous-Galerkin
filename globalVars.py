@@ -1,6 +1,6 @@
 
 
-dimension = 2
+dimension = 3
 order = 1
 
 meshPath = "../MAILLAGES/"
