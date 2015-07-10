@@ -6,24 +6,10 @@ Description: Polynomial class created for integration of base functions
 Important Classes
 Polynomial: {(0,2): 6, (1,1): 7} = 7 xy + 6 y^2
 '''
-# class Monomial:
 
-# 	def __init__(self, (coeff, expos)):
-# 		self.coeff = coeff
-# 		self.expos = tuple(expos)
-
-# 	def __str__(self):
-# 		return str(self.coeff) + "*" + str(self.expos)
-
-# 	# def __add__(self, monom):
-# 	# 	if self.expos == monom.expos:
-# 	# 		return Polynomial( [self.coeff + monom.coeff], [self.expos] )
-# 	# 	return Polynomial( [self.coeff, monom.coeff], [self.expos, monom.expos] )
-
-# 	def __mul__(self, monom):
-# 		expos = [self.expos[i] + monom.expos[i] for i in range( len(self.expos) )]
-# 		return Polynomial( [self.coeff * monom.coeff], [expos])
 from copy import deepcopy as COPY
+from globalVars import dimension
+
 class Polynomial:
 
 	def __init__(self, coeffs, expos):
@@ -67,9 +53,31 @@ class Polynomial:
 				expos.append( tuple(expoA[i] + expoB[i] for i in range( len(expoA) ) ) )
 
 			nPoly = Polynomial(coeffs, expos)
-			newPoly = newPoly.__add__(nPoly)
+			newPoly = newPoly + nPoly
 
 		return newPoly
+
+	def __pow__(self, n):
+		result = self.identity()
+		if n < 16:
+			for i in range(n):
+				result = result * self
+			return result
+
+		# use binary exponentiation
+		result = self.identity()
+		base = self.copy()
+		while n > 0:
+			if (n & 1) > 0: 
+				result = base * result
+			base = base * base
+			n = (n >> 1)
+		return result
+
+
+	def identity(self):
+		return Polynomial([1], [ tuple([0] * dimension) ])
+
 
 	def copy(self):
 		coeffs, expos = [], []
@@ -79,7 +87,6 @@ class Polynomial:
 			coeffs.append(self.Monomials[expo])
 
 		return Polynomial(coeffs, expos)
-
 
 
 

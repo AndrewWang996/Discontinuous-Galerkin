@@ -10,7 +10,7 @@ Elements (node_index_1, node_index_2, node_index_3, attribute)
 Edges (node_index_1, node_index_2)
 Neighbors (element_index_1, element_index_2, element_index_3)
 '''
-from globalVars import meshPath, meshName
+from globalVars import meshPath, meshName, dimension
 import re
 
 filePath = meshPath + meshName + ".1"
@@ -18,6 +18,7 @@ filePath = meshPath + meshName + ".1"
 '''
 Nodes
 (x, y)
+(x, y, z)
 '''
 firstLine = True
 numLines = 0
@@ -29,7 +30,7 @@ for line in open(filePath + ".node"):
 		continue
 
 	line = re.split(" +", line.strip())
-	t = map(float, line[1:3])
+	t = map(float, line[1 : dimension + 1])
 	Nodes.append( tuple(t) )
 
 	numLines += 1
@@ -40,7 +41,8 @@ for line in open(filePath + ".node"):
 
 '''
 Elements
-(node_index_1, node_index_2, node_index_3, attribute)
+(node_index_0, node_index_1, node_index_2, attribute)
+(node_index_0, node_index_1, node_index_2, node_index_3, attribute)
 '''
 firstLine = True
 numLines = 0
@@ -53,7 +55,7 @@ for line in open(filePath + ".ele"):
 
 	line = re.split(" +", line.strip())
 	t = [int(node_index) - 1 for node_index in line[1:] ]
-	t, attr = tuple( sorted( t[:3] ) ), t[3]
+	t, attr = tuple( sorted( t[ : 1 + dimension] ) ), t[1 + dimension]
 	Elements.append( (t, attr) )
 
 	numLines += 1
@@ -62,7 +64,8 @@ for line in open(filePath + ".ele"):
 
 '''
 Edges
-(node_index_1, node_index_2)
+(node_index_0, node_index_1)
+(node_index_0, node_index_1, node_index_2)
 '''
 firstLine = True
 numLines = 0
@@ -74,7 +77,7 @@ for line in open(filePath + ".edge"):
 		continue
 
 	line = re.split(" +", line.strip())
-	t = [int(node_index) - 1 for node_index in line[1:3] ]
+	t = [int(node_index) - 1 for node_index in line[1 : 1 + dimension] ]
 	Edges.append( tuple( sorted(t) ) )
 
 	numLines += 1
@@ -84,7 +87,8 @@ for line in open(filePath + ".edge"):
 
 '''
 Neighbors
-(element_index_1, element_index_2, element_index_3)
+(element_index_0, element_index_1, element_index_2)
+(element_index_0, element_index_1, element_index_2, element_index_3)
 '''
 firstLine = True
 numLines = 0
