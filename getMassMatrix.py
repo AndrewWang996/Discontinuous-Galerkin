@@ -9,10 +9,9 @@ Important Variables
 Jacobians: [J_1, J_2, ... ]
 ReferenceMassMatrix: [[1, 2, ... ];[3, 4, ... ]; ... ]
 '''
-from globalVars import dimension, order
+from globalVars import dimension, order, X, Y, Z
 from readMesh import Nodes, Elements, Edges, Neighbors
 from getBaseFunctions import ReferenceBaseFunctions
-from Polynomial import Polynomial
 from copy import deepcopy as COPY
 from numpy.linalg import det
 
@@ -43,30 +42,27 @@ elif dimension == 3:
 numBaseFunctions = len(ReferenceBaseFunctions)
 ReferenceMassMatrix = [[None for j in range(numBaseFunctions)] for i in range(numBaseFunctions)]
 
-xL, xU = Polynomial([0], [()]), Polynomial([1], [()])
-yL, yU = Polynomial([0], [(0,)]), Polynomial([1, -1], [(0,), (1,)])
-zL, zU = Polynomial([0], [(0,0)]), Polynomial([1,-1,-1], [(0,0), (1,0), (0,1)])
+xL, xU = 0, 1
+yL, yU = 0, 1-X
+zL, zU = 0, 1-X-Y
 
 if dimension == 2:
 	for i, polyI in enumerate(ReferenceBaseFunctions):
 		for j, polyJ in enumerate(ReferenceBaseFunctions):
-			poly = polyI * polyJ
-			poly = poly.integrate(yL, yU)
-			poly = poly.integrate(xL, xU)
-			_ , integral = poly.Monomials.popitem()
-
-			ReferenceMassMatrix[i][j] = integral
+			integral = polyI * polyJ
+			integral = integrate(integral,(Y,0,1-X))
+			integral = integrate(integral,(X,0,1))
+			ReferenceMassMatrix[i][j] = float(integral)
 
 elif dimension == 3:
 	for i, polyI in enumerate(ReferenceBaseFunctions):
 		for j, polyJ in enumerate(ReferenceBaseFunctions):
-			poly = polyI * polyJ
-			poly = poly.integrate(zL, zU)
-			poly = poly.integrate(yL, yU)
-			poly = poly.integrate(xL, xU)
-			_ , integral = poly.Monomials.popitem()
+			integral = polyI * polyJ
+			integral = integrate(integral,(Z,0,1-X-Y))
+			integral = integrate(integral,(Y,0,1-X))
+			integral = integrate(integral,(X,0,1))
+			ReferenceMassMatrix[i][j] = float(integral)
 
-			ReferenceMassMatrix[i][j] = integral
 
 
 
