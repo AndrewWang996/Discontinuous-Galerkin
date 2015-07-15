@@ -7,7 +7,7 @@ Description: Parses mesh files into Python lists
 Important Variables:
 Nodes (x,y)
 Elements ( (node_index_1, node_index_2, node_index_3), attribute)
-Edges (node_index_1, node_index_2)
+Faces (node_index_1, node_index_2)
 Neighbors (element_index_1, element_index_2, element_index_3)
 '''
 from globalVars import meshPath, meshName, dimension
@@ -63,13 +63,13 @@ for line in open(filePath + ".ele"):
 		break
 
 '''
-Edges
+Faces
 (node_index_0, node_index_1)
 (node_index_0, node_index_1, node_index_2)
 '''
 firstLine = True
 numLines = 0
-Edges = []
+Faces = []
 for line in open(filePath + ".edge"):
 	if firstLine:
 		n = int( line.split(" ")[0] )
@@ -78,7 +78,7 @@ for line in open(filePath + ".edge"):
 
 	line = re.split(" +", line.strip())
 	t = [int(node_index) - 1 for node_index in line[1 : 1 + dimension] ]
-	Edges.append( tuple( sorted(t) ) )
+	Faces.append( tuple( sorted(t) ) )
 
 	numLines += 1
 	if numLines >= n:

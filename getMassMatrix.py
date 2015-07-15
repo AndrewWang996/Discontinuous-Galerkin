@@ -10,7 +10,7 @@ Jacobians: [J_1, J_2, ... ]
 ReferenceMassMatrix: [[1, 2, ... ];[3, 4, ... ]; ... ]
 '''
 from globalVars import dimension, order, X, Y, Z
-from readMesh import Nodes, Elements, Edges, Neighbors
+from readMesh import Nodes, Elements, Faces, Neighbors
 from getBaseFunctions import ReferenceBaseFunctions
 from integrals import ReferenceVolumeIntegral
 from copy import deepcopy as COPY
