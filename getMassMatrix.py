@@ -12,8 +12,10 @@ ReferenceMassMatrix: [[1, 2, ... ];[3, 4, ... ]; ... ]
 from globalVars import dimension, order, X, Y, Z
 from readMesh import Nodes, Elements, Edges, Neighbors
 from getBaseFunctions import ReferenceBaseFunctions
+from integrals import ReferenceVolumeIntegral
 from copy import deepcopy as COPY
 from numpy.linalg import det
+from sympy import integrate
 
 Jacobians = []
 
@@ -42,26 +44,12 @@ elif dimension == 3:
 numBaseFunctions = len(ReferenceBaseFunctions)
 ReferenceMassMatrix = [[None for j in range(numBaseFunctions)] for i in range(numBaseFunctions)]
 
-xL, xU = 0, 1
-yL, yU = 0, 1-X
-zL, zU = 0, 1-X-Y
 
-if dimension == 2:
-	for i, polyI in enumerate(ReferenceBaseFunctions):
-		for j, polyJ in enumerate(ReferenceBaseFunctions):
-			integral = polyI * polyJ
-			integral = integrate(integral,(Y,0,1-X))
-			integral = integrate(integral,(X,0,1))
-			ReferenceMassMatrix[i][j] = float(integral)
+for i, polyI in enumerate(ReferenceBaseFunctions):
+	for j, polyJ in enumerate(ReferenceBaseFunctions):
+		ReferenceMassMatrix[i][j] = ReferenceVolumeIntegral(polyI * polyJ)
 
-elif dimension == 3:
-	for i, polyI in enumerate(ReferenceBaseFunctions):
-		for j, polyJ in enumerate(ReferenceBaseFunctions):
-			integral = polyI * polyJ
-			integral = integrate(integral,(Z,0,1-X-Y))
-			integral = integrate(integral,(Y,0,1-X))
-			integral = integrate(integral,(X,0,1))
-			ReferenceMassMatrix[i][j] = float(integral)
+
 
 
 
