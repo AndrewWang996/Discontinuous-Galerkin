@@ -1,7 +1,9 @@
 from math import exp
+from sympy.physics.vector import ReferenceFrame
 from sympy import symbols, Symbol
 
-X,Y,Z = symbols('X Y Z')
+R = ReferenceFrame('R')
+X,Y,Z = R[0], R[1], R[2]
 
 dimension = 2
 order = 1
