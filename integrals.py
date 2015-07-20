@@ -5,6 +5,7 @@ Description: Various nested integrals for use in other modules
 Important Functions
 ReferenceVolumeIntegral: int int int (f) dV
 ReferenceFaceIntegral: int int (f).dS
+	where (v1).(v2) is the dot product of two vectors (v1) and (v2)
 '''
 
 
@@ -15,12 +16,11 @@ def ReferenceVolumeIntegral(f):
 	if dimension == 2:
 		v = integrate(f, (Y,0,1-X))
 		v = integrate(v, (X,0,1))
-		return float(v)
 	elif dimension == 3:
 		v = integrate(f, (Z,0,1-X-Y))
 		v = integrate(v, (Y,0,1-X))
 		v = integrate(v, (X,0,1))
-		return float(v)
+	return float(v)
 
 def ReferenceFaceIntegral(f, i):
 	if dimension == 2:
@@ -54,6 +54,7 @@ def ReferenceFaceIntegral(f, i):
 			v = integrate(v, (X,0,1))
 		else:
 			raise Exception("Please enter a value of 'i' in [0,3]")
+	return float(v)
 
 
 

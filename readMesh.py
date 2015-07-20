@@ -41,8 +41,8 @@ for line in open(filePath + ".node"):
 
 '''
 Elements
-(node_index_0, node_index_1, node_index_2, attribute)
-(node_index_0, node_index_1, node_index_2, node_index_3, attribute)
+((node_index_0, node_index_1, node_index_2), attribute)
+((node_index_0, node_index_1, node_index_2, node_index_3), attribute)
 '''
 firstLine = True
 numLines = 0
