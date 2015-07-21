@@ -7,9 +7,11 @@ Important Variables
 DegreesOfFreedom: [(x_1,y_1), (x_2,y_2), ... ]
 Monomials: [(ex_1,ey_1,ez_1), ...]
 ReferenceBaseFunctions: [Poly_1, Poly_2, ... ]
+ReferenceGradients: [Vector_1, Vector_2, ... ]
 '''
-from globalVars import dimension, order, X, Y, Z
+from globalVars import dimension, order, X, Y, Z, R
 from numpy.linalg import inv
+from sympy.physics.vector import gradient
 
 DegreesOfFreedom = []
 Monomials = []
@@ -36,6 +38,7 @@ elif dimension == 3:
 
 
 ReferenceBaseFunctions = []
+ReferenceGradients = []
 
 if dimension == 2:
 	for i in range( len(DegreesOfFreedom) ):
@@ -49,9 +52,10 @@ if dimension == 2:
 		column = list( inverse[:,i] )       # inverse * vector
 
 		expression = sum( column[i] * pow(X, Monomials[i][0]) 
-																* pow(Y, Monomials[i][1]) 
-																			for i in range( len(column) ) )
+									* pow(Y, Monomials[i][1]) 
+										for i in range( len(column) ) )
 		ReferenceBaseFunctions.append( expression )
+		ReferenceGradients.append( gradient(expression, R) )
 
 elif dimension == 3:
 	for i in range( len(DegreesOfFreedom) ):
@@ -65,10 +69,11 @@ elif dimension == 3:
 		column = list( inverse[:,i] )       # inverse * vector
 
 		expression = sum( column[i] * pow(X, Monomials[i][0])
-																* pow(Y, Monomials[i][1])
-																* pow(Z, Monomials[i][2])
-																			for i in range( len(column) ) )
+									* pow(Y, Monomials[i][1])
+									* pow(Z, Monomials[i][2])
+										for i in range( len(column) ) )
 		ReferenceBaseFunctions.append( expression )
+		ReferenceGradients.append( gradient(expression, R) )
 
 
 

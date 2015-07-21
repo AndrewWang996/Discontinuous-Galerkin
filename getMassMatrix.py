@@ -8,12 +8,14 @@ Description: Finds the Mass Matrix (the matrix in front
 
 Important Variables
 ReferenceMassMatrix: [[1, 2, ... ];[3, 4, ... ]; ... ]
-## MassMatrix: [[1, 2, ... ];[3, 4, ... ]; ... ]
+MassMatrixBlocks: [ [[...]], [[...]], ... ]
 '''
 from readMesh import Nodes, Elements, Faces, Neighbors
 from getBaseFunctions import ReferenceBaseFunctions
 from integrals import ReferenceVolumeIntegral
+from getJacobians import Jacobians
 from numpy.linalg import inv
+from numpy import multiply
 
 
 
@@ -26,19 +28,11 @@ for i, polyI in enumerate(ReferenceBaseFunctions):
 	for j, polyJ in enumerate(ReferenceBaseFunctions):
 		ReferenceMassMatrix[i][j] = ReferenceVolumeIntegral(polyI * polyJ)
 
-print inv(ReferenceMassMatrix)
+MassMatrixBlocks = []
 
-
-# lenMass = len(Jacobians) * len(ReferenceMassMatrix)
-# MassMatrix = [[0 for i in range(lenMass)] for j in range(lenMass)]
-
-# for Ji in range(len(Jacobians)):
-# 	for i in range(len(ReferenceMassMatrix)):
-# 		for j in range(len(ReferenceMassMatrix)):
-# 			xy = Ji * len(ReferenceMassMatrix)
-# 			MassMatrix[xy + i][xy + j] = Jacobians[Ji] * ReferenceMassMatrix[i][j]
-
-
+for J in Jacobians:
+	MassMatrixBlock = map(list, multiply(J, ReferenceMassMatrix) )
+	MassMatrixBlocks.append( list( MassMatrixBlock ) )
 
 
 

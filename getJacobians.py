@@ -6,6 +6,7 @@ Descriptions: Finds the Jacobians for all the transforms
 
 Important Variables
 Jacobians: [J_1, J_2, ... ]
+Dilations: [[0, 1, 2, ...]; [3, 4, 5, ...], ...]
 '''
 from numpy.linalg import det
 from copy import deepcopy as COPY
@@ -13,6 +14,7 @@ from globalVars import dimension
 from readMesh import Nodes, Elements
 
 Jacobians = []
+Dilations = []
 
 if dimension == 2:
 	for element, attribute in Elements:
@@ -20,6 +22,7 @@ if dimension == 2:
 		b = COPY(points[0])
 		A = COPY(points[1:])
 		A = [[node[i] - b[i] for i in range(2)] for node in A]
+		Dilations.append(A)
 		Jacobian = det(A)
 		Jacobians.append(Jacobian)
 
@@ -29,5 +32,6 @@ elif dimension == 3:
 		b = COPY(points[0])
 		A = COPY(points[1:])
 		A = [[node[i] - b[i] for i in range(3)] for node in A]
+		Dilations.append(A)
 		Jacobian = det(A)
 		Jacobians.append(Jacobian)

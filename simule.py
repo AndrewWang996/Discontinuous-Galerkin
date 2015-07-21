@@ -16,6 +16,7 @@ from readData import Tags
 from getBaseFunctions import ReferenceBaseFunctions
 from getJacobians import Jacobians
 from getMassMatrix import ReferenceMassMatrix
+from getStiffnessMatrix import ReferenceStiffnessMatrix
 
 from globalVars import X,Y,Z
 
