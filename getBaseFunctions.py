@@ -41,14 +41,15 @@ ReferenceBaseFunctions = []
 ReferenceGradients = []
 
 if dimension == 2:
+	matrix = []
+	for (x,y) in DegreesOfFreedom:
+		row = []
+		for (ex,ey) in Monomials:
+			row.append( pow(x,ex) * pow(y,ey) )
+		matrix.append(row)
+	inverse = inv(matrix)
+
 	for i in range( len(DegreesOfFreedom) ):
-		matrix = []
-		for (x,y) in DegreesOfFreedom:
-			row = []
-			for (ex,ey) in Monomials:
-				row.append( pow(x,ex) * pow(y,ey) )
-			matrix.append(row)
-		inverse = inv(matrix)
 		column = list( inverse[:,i] )       # inverse * vector
 
 		expression = sum( column[i] * pow(X, Monomials[i][0]) 
@@ -58,14 +59,15 @@ if dimension == 2:
 		ReferenceGradients.append( gradient(expression, R) )
 
 elif dimension == 3:
+	matrix = []
+	for (x,y,z) in DegreesOfFreedom:
+		row = []
+		for (ex,ey,ez) in Monomials:
+			row.append( pow(x,ex) * pow(y,ey) * pow(z,ez) )
+		matrix.append(row)
+	inverse = inv(matrix)
+	
 	for i in range( len(DegreesOfFreedom) ):
-		matrix = []
-		for (x,y,z) in DegreesOfFreedom:
-			row = []
-			for (ex,ey,ez) in Monomials:
-				row.append( pow(x,ex) * pow(y,ey) * pow(z,ez) )
-			matrix.append(row)
-		inverse = inv(matrix)
 		column = list( inverse[:,i] )       # inverse * vector
 
 		expression = sum( column[i] * pow(X, Monomials[i][0])
